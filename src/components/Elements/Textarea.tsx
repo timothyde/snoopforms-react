@@ -1,5 +1,7 @@
 import React, { FC, useContext } from "react";
+import { setSubmissionValue } from "../../lib/elements";
 import { SubmissionContext } from "../SnoopForm/SnoopForm";
+import { PageContext } from "../SnoopPage/SnoopPage";
 
 interface ClassNames {
   label?: string;
@@ -22,6 +24,7 @@ export const Textarea: FC<Props> = ({
   required,
 }) => {
   const { submission, setSubmission } = useContext(SubmissionContext);
+  const pageName = useContext(PageContext);
   return (
     <textarea
       rows={rows}
@@ -30,10 +33,13 @@ export const Textarea: FC<Props> = ({
       className={classNames.element}
       placeholder={placeholder}
       onChange={(e) =>
-        setSubmission((submission: any) => ({
-          ...submission,
-          [name]: e.target.value,
-        }))
+        setSubmissionValue(
+          e.target.value,
+          pageName,
+          name,
+          submission,
+          setSubmission
+        )
       }
       required={required}
     />

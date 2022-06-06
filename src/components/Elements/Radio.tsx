@@ -1,11 +1,13 @@
 import { RadioGroup } from "@headlessui/react";
 import React, { FC, useContext, useState } from "react";
+import { setSubmissionValue } from "../../lib/elements";
 import { SubmissionContext } from "../SnoopForm/SnoopForm";
+import { PageContext } from "../SnoopPage/SnoopPage";
 
 interface ClassNames {
   label?: string;
   element?: string;
-  radioOption?: string;
+  radioOption?: string | ((bag: any) => string) | undefined;
   radioGroup?: string;
 }
 
@@ -24,15 +26,13 @@ interface Props {
 
 export const Radio: FC<Props> = ({ name, options, classNames, required }) => {
   const { submission, setSubmission }: any = useContext(SubmissionContext);
+  const pageName = useContext(PageContext);
   return (
     <div>
       <RadioGroup
         value={submission[name]}
         onChange={(v) =>
-          setSubmission((submission: any) => ({
-            ...submission,
-            [name]: v,
-          }))
+          setSubmissionValue(v, pageName, name, submission, setSubmission)
         }
         className={classNames.radioGroup}
       >

@@ -6,7 +6,11 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { SchemaContext } from "../SnoopForm/SnoopForm";
+import {
+  CurrentPageContext,
+  SchemaContext,
+  SubmitHandlerContext,
+} from "../SnoopForm/SnoopForm";
 
 export const PageContext = createContext("");
 
@@ -14,10 +18,18 @@ interface Props {
   name: string;
   className?: string;
   children?: ReactNode;
+  thankyou?: boolean;
 }
 
-export const SnoopPage: FC<Props> = ({ name, className, children }) => {
-  const { schema, setSchema } = useContext(SchemaContext);
+export const SnoopPage: FC<Props> = ({
+  name,
+  className,
+  children,
+  thankyou = false,
+}) => {
+  const { schema, setSchema } = useContext<any>(SchemaContext);
+  const { currentPageIdx, setCurrentPageIdx } = useContext(CurrentPageContext);
+  const handleSubmit = useContext(SubmitHandlerContext);
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
@@ -28,17 +40,44 @@ export const SnoopPage: FC<Props> = ({ name, className, children }) => {
         console.warn(
           `🦝 SnoopForms: Page with the name "${name}" already exists`
         );
-        return;
+        return newSchema;
       }
-      newSchema.pages.push({ name, elements: [] });
-      setInitializing(false);
+      if (thankyou) {
+        newSchema.pages.push({ name, type: "thankyou" });
+      } else {
+        newSchema.pages.push({ name, type: "form", elements: [] });
+      }
+
       return newSchema;
     });
   }, [name]);
 
+  useEffect(() => {
+    if (initializing) {
+      let pageIdx = schema.pages.findIndex((p: any) => p.name === name);
+      if (pageIdx !== -1) {
+        setInitializing(false);
+      }
+    }
+  }, [schema]);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(name);
+  };
+
+  if (initializing) {
+    return <div />;
+  }
+
   return (
     <PageContext.Provider value={name}>
-      <div className={className}> {!initializing && children}</div>
+      {currentPageIdx ===
+        schema.pages.findIndex((p: any) => p.name === name) && (
+        <form className={className} onSubmit={onSubmit}>
+          {children}
+        </form>
+      )}
     </PageContext.Provider>
   );
 };
