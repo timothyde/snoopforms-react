@@ -1,5 +1,5 @@
 {
-  "name": "snoopforms-react",
+  "name": "@snoopforms/react",
   "version": "0.0.1",
   "description": "React library with form- & survey-elements for the snoopForms platform",
   "main": "dist/cjs/index.js",
