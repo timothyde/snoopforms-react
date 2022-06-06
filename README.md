@@ -1,10 +1,12 @@
-# snoopforms-react
+# snoopForms React Library
 
-**(work in progress)** React Library with form- & survey-elements for the snoopForms platform
+React Library with form- & survey-elements for the snoopForms platform
 
 [![npm package](https://img.shields.io/badge/npm%20i-@snoopforms/react)](https://www.npmjs.com/package/@snoopforms/react) [![version number](https://img.shields.io/npm/v/@snoopforms/react?color=green&label=version)](https://github.com/snoopforms/snoopforms-react/releases) [![Actions Status](https://github.com/snoopForms/snoopforms-react/workflows/Test/badge.svg)](https://github.com/snoopForms/snoopforms-react/actions) [![License](https://img.shields.io/github/license/snoopforms/snoopforms-react)](https://github.com/snoopForms/snoopforms-react/blob/main/LICENSE)
 
-This repository is still work in progress in an early phase. We love the open source community and want to show early on what we are working on. Will will update this readme with more information as soon as it's safe to use. Until then, please feel free to share your thoughts, get in touch and contribute if you like.
+<br/>
+
+> :warning: **Note**: This repository is still in an early stage of development. We love the open source community and want to show what we are working on early. We will update this readme with more information once it is safe to use. Until then, feel free to share your thoughts, contact us, and contribute if you'd like.
 
 ## Installation
 
