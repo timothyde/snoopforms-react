@@ -4,6 +4,7 @@ import { PageContext } from "../SnoopPage/SnoopPage";
 import { Text } from "../Elements/Text";
 import { Radio } from "../Elements/Radio";
 import { Textarea } from "../Elements/Textarea";
+import { Submit } from "../Elements/Submit";
 
 interface Option {
   label: string;
@@ -29,7 +30,7 @@ interface Props {
 export const SnoopElement: FC<Props> = ({
   type,
   name,
-  label = null,
+  label = undefined,
   placeholder,
   classNames = {},
   required = false,
@@ -68,33 +69,51 @@ export const SnoopElement: FC<Props> = ({
 
   return (
     <div>
-      {label && (
-        <label htmlFor={name} className={classNames.label}>
-          {label}
-        </label>
-      )}
       {type === "radio" ? (
-        <Radio
-          name={name}
-          classNames={classNames}
-          required={required}
-          options={options || []}
-        />
+        <>
+          {label && (
+            <label htmlFor={name} className={classNames.label}>
+              {label}
+            </label>
+          )}
+          <Radio
+            name={name}
+            classNames={classNames}
+            required={required}
+            options={options || []}
+          />
+        </>
+      ) : type === "submit" ? (
+        <Submit label={label} classNames={classNames} />
       ) : type === "text" ? (
-        <Text
-          name={name}
-          placeholder={placeholder}
-          classNames={classNames}
-          required={required}
-        />
+        <>
+          {label && (
+            <label htmlFor={name} className={classNames.label}>
+              {label}
+            </label>
+          )}
+          <Text
+            name={name}
+            placeholder={placeholder}
+            classNames={classNames}
+            required={required}
+          />
+        </>
       ) : type === "textarea" ? (
-        <Textarea
-          name={name}
-          rows={rows}
-          placeholder={placeholder}
-          classNames={classNames}
-          required={required}
-        />
+        <>
+          {label && (
+            <label htmlFor={name} className={classNames.label}>
+              {label}
+            </label>
+          )}
+          <Textarea
+            name={name}
+            rows={rows}
+            placeholder={placeholder}
+            classNames={classNames}
+            required={required}
+          />
+        </>
       ) : null}
     </div>
   );
