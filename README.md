@@ -14,10 +14,15 @@ React Library with form- & survey-elements for the snoopForms platform
 npm install @snoopforms/react
 ```
 
-## How to use
+## How to use it 🤓
 
-Use the SnoopForm components to build your form easily. Use the `SnoopForm` wrapper to make the connection to the SnoopForm Data-Platform. Use `SnoopPage` to tell the Form where you need an new page. The SnoopForms library will only show the current page to the user. That way you can build long, more complex forms or a Typeform-like form-view, where you change the page after every question.
-You can choose your `SnoopElements` from a wide range of pre-coded components, including text, email, checkboxes, radio-buttons, color-pickers, and many more.
+Use the SnoopForm components to build your form easily.
+
+ `SnoopForm:` Use the `SnoopForm` wrapper to make the connection to the SnoopForm Data-Platform.
+ `SnoopPage:` Use `SnoopPage` to tell the Form where you need an new page. The SnoopForms library will only show the current page to the user. That way you can build long, more complex forms or a Typeform-like form-view, where the page changes after every question.
+ `SnoopElements:` You can choose your `SnoopElements` from a wide range of pre-coded components, including text, email, checkboxes, radio-buttons, color-pickers, and many more.
+
+## Example
 
 ```jsx
 <SnoopForm domain="example.com" formId={"abcde123"}>
@@ -34,6 +39,6 @@ You can choose your `SnoopElements` from a wide range of pre-coded components, i
 </SnoopForm>
 ```
 
-## Contributing
+## Contribute 🙏
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
