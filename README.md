@@ -25,7 +25,7 @@ You can choose your `SnoopElements` from a wide range of pre-coded components, i
     <SnoopElement type="text" name={"name"} label="Your name" />
     <SnoopElement
       type="radio"
-      name={"importance"}
+      name="importance"
       label="What's your favorite food?"
       options={["Pizza", "Pasta", "Sushi"]}
     />
