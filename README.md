@@ -18,9 +18,9 @@ npm install @snoopforms/react
 
 Use the SnoopForm components to build your form easily.
 
- `SnoopForm:` Use the `SnoopForm` wrapper to make the connection to the SnoopForm Data-Platform.
- `SnoopPage:` Use `SnoopPage` to tell the Form where you need an new page. The SnoopForms library will only show the current page to the user. That way you can build long, more complex forms or a Typeform-like form-view, where the page changes after every question.
- `SnoopElements:` You can choose your `SnoopElements` from a wide range of pre-coded components, including text, email, checkboxes, radio-buttons, color-pickers, and many more.
+- `SnoopForm:` Use the `SnoopForm` wrapper to make the connection to the SnoopForm Data-Platform.
+- `SnoopPage:` Use `SnoopPage` to tell the Form where you need an new page. The SnoopForms library will only show the current page to the user. That way you can build long, more complex forms or a Typeform-like form-view, where the page changes after every question.
+- `SnoopElements:` You can choose your `SnoopElements` from a wide range of pre-coded components, including text, email, checkboxes, radio-buttons, color-pickers, and many more.
 
 ## Example
 
