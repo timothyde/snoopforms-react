@@ -2,7 +2,7 @@
 
 React Library with form- & survey-elements for the snoopForms platform
 
-[![npm package](https://img.shields.io/badge/npm%20i-@snoopforms/react)](https://www.npmjs.com/package/@snoopforms/react) [![version number](https://img.shields.io/npm/v/@snoopforms/react?color=green&label=version)](https://github.com/snoopforms/snoopforms-react/releases) [![Actions Status](https://github.com/snoopForms/snoopforms-react/workflows/Test/badge.svg)](https://github.com/snoopForms/snoopforms-react/actions) [![License](https://img.shields.io/github/license/snoopforms/snoopforms-react)](https://github.com/snoopForms/snoopforms-react/blob/main/LICENSE)
+[![npm package](https://img.shields.io/badge/npm%20i-@snoopforms/react)](https://www.npmjs.com/package/@snoopforms/react) [![version number](https://img.shields.io/npm/v/@snoopforms/react?color=green&label=version)](https://github.com/snoopforms/react/releases) [![Actions Status](https://github.com/snoopForms/snoopforms-react/workflows/Test/badge.svg)](https://github.com/snoopForms/snoopforms-react/actions) [![License](https://img.shields.io/github/license/snoopforms/snoopforms-react)](https://github.com/snoopForms/snoopforms-react/blob/main/LICENSE)
 
 <br/>
 

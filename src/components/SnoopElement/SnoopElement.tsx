@@ -5,15 +5,12 @@ import { Text } from "../Elements/Text";
 import { Radio } from "../Elements/Radio";
 import { Textarea } from "../Elements/Textarea";
 import { Submit } from "../Elements/Submit";
+import { Checkbox } from "../Elements/Checkbox";
+import { ClassNames } from "../../types";
 
 interface Option {
   label: string;
   value: string;
-}
-
-interface ClassNames {
-  label?: string;
-  element?: string;
 }
 
 interface Props {
@@ -69,7 +66,21 @@ export const SnoopElement: FC<Props> = ({
 
   return (
     <div>
-      {type === "radio" ? (
+      {type === "checkbox" ? (
+        <>
+          {label && (
+            <label htmlFor={name} className={classNames.label}>
+              {label}
+            </label>
+          )}
+          <Checkbox
+            name={name}
+            classNames={classNames}
+            required={required}
+            options={options || []}
+          />
+        </>
+      ) : type === "radio" ? (
         <>
           {label && (
             <label htmlFor={name} className={classNames.label}>
