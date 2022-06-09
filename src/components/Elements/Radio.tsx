@@ -3,13 +3,7 @@ import React, { FC, useContext, useState } from "react";
 import { setSubmissionValue } from "../../lib/elements";
 import { SubmissionContext } from "../SnoopForm/SnoopForm";
 import { PageContext } from "../SnoopPage/SnoopPage";
-
-interface ClassNames {
-  label?: string;
-  element?: string;
-  radioOption?: string | ((bag: any) => string) | undefined;
-  radioGroup?: string;
-}
+import { ClassNames } from "../../types";
 
 interface Option {
   label: string;
@@ -36,22 +30,17 @@ export const Radio: FC<Props> = ({ name, options, classNames, required }) => {
         }
         className={classNames.radioGroup}
       >
-        {/* <RadioGroup.Label className="sr-only">
-          Choose an option
-        </RadioGroup.Label> */}
-        <div className="grid grid-cols-11 gap-3">
-          {options.map((option) => (
-            <RadioGroup.Option
-              key={typeof option === "object" ? option.value : option}
-              value={typeof option === "object" ? option.value : option}
-              className={classNames.radioOption}
-            >
-              <RadioGroup.Label as="span">
-                {typeof option === "object" ? option.label : option}
-              </RadioGroup.Label>
-            </RadioGroup.Option>
-          ))}
-        </div>
+        {options.map((option) => (
+          <RadioGroup.Option
+            key={typeof option === "object" ? option.value : option}
+            value={typeof option === "object" ? option.value : option}
+            className={classNames.radioOption}
+          >
+            <RadioGroup.Label as="span">
+              {typeof option === "object" ? option.label : option}
+            </RadioGroup.Label>
+          </RadioGroup.Option>
+        ))}
       </RadioGroup>
     </div>
   );

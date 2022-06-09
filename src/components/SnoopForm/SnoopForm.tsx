@@ -93,7 +93,7 @@ export const SnoopForm: FC<Props> = ({
           <CurrentPageContext.Provider
             value={{ currentPageIdx, setCurrentPageIdx }}
           >
-            <div /* className={className} */>{children}</div>
+            <div className={className}>{children}</div>
           </CurrentPageContext.Provider>
         </SubmissionContext.Provider>
       </SchemaContext.Provider>

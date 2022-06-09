@@ -2,11 +2,7 @@ import React, { FC, useContext } from "react";
 import { setSubmissionValue } from "../../lib/elements";
 import { SubmissionContext } from "../SnoopForm/SnoopForm";
 import { PageContext } from "../SnoopPage/SnoopPage";
-
-interface ClassNames {
-  label?: string;
-  element?: string;
-}
+import { ClassNames } from "../../types";
 
 interface Props {
   name: string;
