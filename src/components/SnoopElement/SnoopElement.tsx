@@ -7,6 +7,7 @@ import { Textarea } from "../Elements/Textarea";
 import { Submit } from "../Elements/Submit";
 import { Checkbox } from "../Elements/Checkbox";
 import { ClassNames } from "../../types";
+import { getOptionsSchema } from "../../lib/elements";
 
 interface Option {
   label: string;
@@ -20,7 +21,7 @@ interface Props {
   placeholder?: string;
   classNames?: ClassNames;
   required?: boolean;
-  options?: Option[];
+  options?: Option[] | string[];
   rows?: number;
 }
 
@@ -60,6 +61,10 @@ export const SnoopElement: FC<Props> = ({
       }
       newSchema.pages[pageIdx].elements[elementIdx].type = type;
       newSchema.pages[pageIdx].elements[elementIdx].label = label;
+      if (["checkbox", "radio"].includes(type)) {
+        newSchema.pages[pageIdx].elements[elementIdx].options =
+          getOptionsSchema(options);
+      }
       return newSchema;
     });
   }, [name, setSchema, pageName]);

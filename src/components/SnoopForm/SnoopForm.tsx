@@ -53,26 +53,38 @@ export const SnoopForm: FC<Props> = ({
   const handleSubmit = async (pageName: string) => {
     let _answerSessionId = answerSessionId;
     // create answer session if it don't exist
-    if (!_answerSessionId) {
-      const answerSession: any = await fetch(
-        `${protocol}://${domain}/api/forms/${formId}/answerSessions/`,
+    try {
+      if (!_answerSessionId) {
+        const answerSessionRes: any = await fetch(
+          `${protocol}://${domain}/api/forms/${formId}/submissionSessions`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const answerSession = await answerSessionRes.json();
+        _answerSessionId = answerSession.id;
+        setAnswerSessionId(_answerSessionId);
+      }
+      // send answer to snoop platform
+      await fetch(
+        `${protocol}://${domain}/api/forms/${formId}/submissionSessions/${_answerSessionId}/submissions`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pageName, data: submission[pageName] }),
         }
       );
-      _answerSessionId = answerSession.id;
-      setAnswerSessionId(_answerSessionId);
-    }
-    // send answer to snoop platform
-    await fetch(
-      `${protocol}://${domain}/api/forms/${formId}/answerSessions/${_answerSessionId}/answers`,
-      {
+      // update schema
+      // TODO: do conditionally only when requested by the snoopHub
+      await fetch(`${protocol}://${domain}/api/forms/${formId}/schema`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pageName, submission: submission[pageName] }),
-      }
-    );
+        body: JSON.stringify({ schema }),
+      });
+    } catch (e) {
+      console.error(`Unable to send submission to snoopHub. Error: ${e}`);
+    }
     const maxPageIdx = schema.pages.length - 1;
     const hasThankYou = schema.pages[maxPageIdx].type === "thankyou";
     if (currentPageIdx < maxPageIdx) {
