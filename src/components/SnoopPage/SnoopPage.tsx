@@ -28,9 +28,9 @@ export const SnoopPage: FC<Props> = ({
   thankyou = false,
 }) => {
   const { schema, setSchema } = useContext<any>(SchemaContext);
-  const { currentPageIdx, setCurrentPageIdx } = useContext(CurrentPageContext);
   const handleSubmit = useContext(SubmitHandlerContext);
   const [initializing, setInitializing] = useState(true);
+  const { currentPageIdx } = useContext(CurrentPageContext);
 
   useEffect(() => {
     setSchema((schema: any) => {
@@ -70,14 +70,20 @@ export const SnoopPage: FC<Props> = ({
     return <div />;
   }
 
-  return (
-    <PageContext.Provider value={name}>
-      {currentPageIdx ===
-        schema.pages.findIndex((p: any) => p.name === name) && (
+  if (thankyou) {
+    return (
+      <PageContext.Provider value={name}>
+        {currentPageIdx ===
+          schema.pages.findIndex((p: any) => p.name === name) && children}
+      </PageContext.Provider>
+    );
+  } else {
+    return (
+      <PageContext.Provider value={name}>
         <form className={className} onSubmit={onSubmit}>
           {children}
         </form>
-      )}
-    </PageContext.Provider>
-  );
+      </PageContext.Provider>
+    );
+  }
 };

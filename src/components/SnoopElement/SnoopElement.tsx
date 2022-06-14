@@ -1,5 +1,9 @@
 import React, { FC, useContext, useEffect } from "react";
-import { SchemaContext, SubmissionContext } from "../SnoopForm/SnoopForm";
+import {
+  CurrentPageContext,
+  SchemaContext,
+  SubmissionContext,
+} from "../SnoopForm/SnoopForm";
 import { PageContext } from "../SnoopPage/SnoopPage";
 import { Text } from "../Elements/Text";
 import { Radio } from "../Elements/Radio";
@@ -37,6 +41,7 @@ export const SnoopElement: FC<Props> = ({
 }) => {
   const { schema, setSchema } = useContext(SchemaContext);
   const pageName = useContext(PageContext);
+  const { currentPageIdx } = useContext(CurrentPageContext);
 
   useEffect(() => {
     setSchema((schema: any) => {
@@ -71,66 +76,71 @@ export const SnoopElement: FC<Props> = ({
 
   return (
     <div>
-      {type === "checkbox" ? (
-        <>
-          {label && (
-            <label htmlFor={name} className={classNames.label}>
-              {label}
-            </label>
-          )}
-          <Checkbox
-            name={name}
-            classNames={classNames}
-            required={required}
-            options={options || []}
-          />
-        </>
-      ) : type === "radio" ? (
-        <>
-          {label && (
-            <label htmlFor={name} className={classNames.label}>
-              {label}
-            </label>
-          )}
-          <Radio
-            name={name}
-            classNames={classNames}
-            required={required}
-            options={options || []}
-          />
-        </>
-      ) : type === "submit" ? (
-        <Submit label={label} classNames={classNames} />
-      ) : type === "text" ? (
-        <>
-          {label && (
-            <label htmlFor={name} className={classNames.label}>
-              {label}
-            </label>
-          )}
-          <Text
-            name={name}
-            placeholder={placeholder}
-            classNames={classNames}
-            required={required}
-          />
-        </>
-      ) : type === "textarea" ? (
-        <>
-          {label && (
-            <label htmlFor={name} className={classNames.label}>
-              {label}
-            </label>
-          )}
-          <Textarea
-            name={name}
-            rows={rows}
-            placeholder={placeholder}
-            classNames={classNames}
-            required={required}
-          />
-        </>
-      ) : null}
+      {currentPageIdx ===
+        schema.pages.findIndex((p: any) => p.name === pageName) && (
+        <div>
+          {type === "checkbox" ? (
+            <>
+              {label && (
+                <label htmlFor={name} className={classNames.label}>
+                  {label}
+                </label>
+              )}
+              <Checkbox
+                name={name}
+                classNames={classNames}
+                required={required}
+                options={options || []}
+              />
+            </>
+          ) : type === "radio" ? (
+            <>
+              {label && (
+                <label htmlFor={name} className={classNames.label}>
+                  {label}
+                </label>
+              )}
+              <Radio
+                name={name}
+                classNames={classNames}
+                required={required}
+                options={options || []}
+              />
+            </>
+          ) : type === "submit" ? (
+            <Submit label={label} classNames={classNames} />
+          ) : type === "text" ? (
+            <>
+              {label && (
+                <label htmlFor={name} className={classNames.label}>
+                  {label}
+                </label>
+              )}
+              <Text
+                name={name}
+                placeholder={placeholder}
+                classNames={classNames}
+                required={required}
+              />
+            </>
+          ) : type === "textarea" ? (
+            <>
+              {label && (
+                <label htmlFor={name} className={classNames.label}>
+                  {label}
+                </label>
+              )}
+              <Textarea
+                name={name}
+                rows={rows}
+                placeholder={placeholder}
+                classNames={classNames}
+                required={required}
+              />
+            </>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

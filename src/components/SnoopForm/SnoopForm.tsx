@@ -1,4 +1,7 @@
 import React, { createContext, FC, ReactNode, useState } from "react";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+
+const fpPromise = FingerprintJS.load();
 
 export const SchemaContext = createContext({
   schema: { pages: [] },
@@ -48,39 +51,50 @@ export const SnoopForm: FC<Props> = ({
   const [schema, setSchema] = useState<any>({ pages: [] });
   const [submission, setSubmission] = useState<any>({});
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  const [answerSessionId, setAnswerSessionId] = useState("");
+  const [submissionSessionId, setSubmissionSessionId] = useState("");
 
   const handleSubmit = async (pageName: string) => {
-    let _answerSessionId = answerSessionId;
+    let _submissionSessionId = submissionSessionId;
     // create answer session if it don't exist
     try {
-      if (!_answerSessionId) {
-        const answerSessionRes: any = await fetch(
+      if (!_submissionSessionId) {
+        // get digital fingerprint of user for unique user feature
+        const fp = await fpPromise;
+        const fpResult = await fp.get();
+        // create new submissionSession in snoopHub
+        const submissionSessionRes: any = await fetch(
           `${protocol}://${domain}/api/forms/${formId}/submissionSessions`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userFingerprint: fpResult.visitorId,
+            }),
           }
         );
-        const answerSession = await answerSessionRes.json();
-        _answerSessionId = answerSession.id;
-        setAnswerSessionId(_answerSessionId);
+        const submissionSession = await submissionSessionRes.json();
+        _submissionSessionId = submissionSession.id;
+        setSubmissionSessionId(_submissionSessionId);
       }
       // send answer to snoop platform
-      await fetch(
-        `${protocol}://${domain}/api/forms/${formId}/submissionSessions/${_answerSessionId}/submissions`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pageName, data: submission[pageName] }),
-        }
-      );
-      // update schema
-      // TODO: do conditionally only when requested by the snoopHub
-      await fetch(`${protocol}://${domain}/api/forms/${formId}/schema`, {
+      await fetch(`${protocol}://${domain}/api/forms/${formId}/event`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ schema }),
+        body: JSON.stringify({
+          events: [
+            {
+              type: "pageSubmission",
+              data: {
+                pageName,
+                submissionSessionId: _submissionSessionId,
+                submission: submission[pageName],
+              },
+            },
+            // update schema
+            // TODO: do conditionally only when requested by the snoopHub
+            { type: "updateSchema", data: schema },
+          ],
+        }),
       });
     } catch (e) {
       console.error(`Unable to send submission to snoopHub. Error: ${e}`);
