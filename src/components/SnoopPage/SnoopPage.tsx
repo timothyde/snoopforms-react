@@ -80,9 +80,12 @@ export const SnoopPage: FC<Props> = ({
   } else {
     return (
       <PageContext.Provider value={name}>
-        <form className={className} onSubmit={onSubmit}>
-          {children}
-        </form>
+        {currentPageIdx ===
+          schema.pages.findIndex((p: any) => p.name === name) && (
+          <form className={className} onSubmit={onSubmit}>
+            {children}
+          </form>
+        )}
       </PageContext.Provider>
     );
   }

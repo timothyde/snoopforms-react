@@ -1,7 +1,11 @@
-import React, { createContext, FC, ReactNode, useState } from "react";
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
-
-const fpPromise = FingerprintJS.load();
+import React, {
+  createContext,
+  FC,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
+import FingerprintJS, { Agent } from "@fingerprintjs/fingerprintjs";
 
 export const SchemaContext = createContext({
   schema: { pages: [] },
@@ -35,6 +39,7 @@ interface Props {
   domain: string;
   formId: string;
   protocol?: "http" | "https";
+  localOnly?: boolean;
   className?: string;
   onSubmit?: (obj: onSubmitProps) => void;
   children?: ReactNode;
@@ -44,6 +49,7 @@ export const SnoopForm: FC<Props> = ({
   domain = "app.snoopforms.com",
   formId,
   protocol = "https",
+  localOnly = false,
   className = "",
   onSubmit = (): any => {},
   children,
@@ -52,52 +58,64 @@ export const SnoopForm: FC<Props> = ({
   const [submission, setSubmission] = useState<any>({});
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
   const [submissionSessionId, setSubmissionSessionId] = useState("");
+  const [fp, setFp] = useState<Agent>();
+
+  useEffect(() => {
+    FingerprintJS.load().then((f) => setFp(f));
+  });
 
   const handleSubmit = async (pageName: string) => {
     let _submissionSessionId = submissionSessionId;
-    // create answer session if it don't exist
-    try {
-      if (!_submissionSessionId) {
-        // get digital fingerprint of user for unique user feature
-        const fp = await fpPromise;
-        const fpResult = await fp.get();
-        // create new submissionSession in snoopHub
-        const submissionSessionRes: any = await fetch(
-          `${protocol}://${domain}/api/forms/${formId}/submissionSessions`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userFingerprint: fpResult.visitorId,
-            }),
-          }
-        );
-        const submissionSession = await submissionSessionRes.json();
-        _submissionSessionId = submissionSession.id;
-        setSubmissionSessionId(_submissionSessionId);
-      }
-      // send answer to snoop platform
-      await fetch(`${protocol}://${domain}/api/forms/${formId}/event`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          events: [
+    if (!localOnly) {
+      // create answer session if it don't exist
+      try {
+        if (typeof fp === "undefined") {
+          console.error(
+            `Unable to send submission to snoopHub. Error: Can't initialize fingerprint`
+          );
+          return;
+        }
+        if (!_submissionSessionId) {
+          // get digital fingerprint of user for unique user feature
+          const fpResult = await fp.get();
+          // create new submissionSession in snoopHub
+          const submissionSessionRes: any = await fetch(
+            `${protocol}://${domain}/api/forms/${formId}/submissionSessions`,
             {
-              type: "pageSubmission",
-              data: {
-                pageName,
-                submissionSessionId: _submissionSessionId,
-                submission: submission[pageName],
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                userFingerprint: fpResult.visitorId,
+              }),
+            }
+          );
+          const submissionSession = await submissionSessionRes.json();
+          _submissionSessionId = submissionSession.id;
+          setSubmissionSessionId(_submissionSessionId);
+        }
+        // send answer to snoop platform
+        await fetch(`${protocol}://${domain}/api/forms/${formId}/event`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            events: [
+              {
+                type: "pageSubmission",
+                data: {
+                  pageName,
+                  submissionSessionId: _submissionSessionId,
+                  submission: submission[pageName],
+                },
               },
-            },
-            // update schema
-            // TODO: do conditionally only when requested by the snoopHub
-            { type: "updateSchema", data: schema },
-          ],
-        }),
-      });
-    } catch (e) {
-      console.error(`Unable to send submission to snoopHub. Error: ${e}`);
+              // update schema
+              // TODO: do conditionally only when requested by the snoopHub
+              { type: "updateSchema", data: schema },
+            ],
+          }),
+        });
+      } catch (e) {
+        console.error(`Unable to send submission to snoopHub. Error: ${e}`);
+      }
     }
     const maxPageIdx = schema.pages.length - 1;
     const hasThankYou = schema.pages[maxPageIdx].type === "thankyou";
