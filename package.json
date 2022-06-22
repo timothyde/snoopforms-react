@@ -1,7 +1,13 @@
 {
   "name": "@snoopforms/react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React library with form- & survey-elements for the snoopForms platform",
+  "keywords": [
+    "react",
+    "forms",
+    "snoop",
+    "snoopforms"
+  ],
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "umd:main": "dist/umd/index.js",

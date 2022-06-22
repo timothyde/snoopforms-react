@@ -25,7 +25,7 @@ Use the SnoopForm components to build your form easily.
 ## Example
 
 ```jsx
-<SnoopForm domain="example.com" formId={"abcde123"}>
+<SnoopForm domain="example.com" formId="abcde123">
   <SnoopPage name="first">
     <SnoopElement type="text" name={"name"} label="Your name" />
     <SnoopElement
@@ -34,7 +34,7 @@ Use the SnoopForm components to build your form easily.
       label="What's your favorite food?"
       options={["Pizza", "Pasta", "Sushi"]}
     />
-    <SnoopSubmit label="Submit 💪"/>
+    <SnoopElement type="submit" label="Submit 💪" />
   </SnoopPage>
 </SnoopForm>
 ```

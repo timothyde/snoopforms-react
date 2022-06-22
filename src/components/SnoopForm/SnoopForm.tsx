@@ -61,7 +61,7 @@ export const SnoopForm: FC<Props> = ({
   const [fp, setFp] = useState<Agent>();
 
   useEffect(() => {
-    FingerprintJS.load().then((f) => setFp(f));
+    FingerprintJS.load({ monitoring: false }).then((f) => setFp(f));
   });
 
   const handleSubmit = async (pageName: string) => {

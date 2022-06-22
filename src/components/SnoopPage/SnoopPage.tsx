@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { classNames } from "../../lib/utils";
 import {
   CurrentPageContext,
   SchemaContext,
@@ -80,12 +81,18 @@ export const SnoopPage: FC<Props> = ({
   } else {
     return (
       <PageContext.Provider value={name}>
-        {currentPageIdx ===
-          schema.pages.findIndex((p: any) => p.name === name) && (
-          <form className={className} onSubmit={onSubmit}>
-            {children}
-          </form>
-        )}
+        <form
+          className={classNames(
+            currentPageIdx ===
+              schema.pages.findIndex((p: any) => p.name === name)
+              ? "block"
+              : "hidden",
+            className
+          )}
+          onSubmit={onSubmit}
+        >
+          {children}
+        </form>
       </PageContext.Provider>
     );
   }
