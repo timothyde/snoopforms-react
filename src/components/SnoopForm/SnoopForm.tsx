@@ -62,7 +62,7 @@ export const SnoopForm: FC<Props> = ({
 
   useEffect(() => {
     FingerprintJS.load({ monitoring: false }).then((f) => setFp(f));
-  });
+  }, []);
 
   const handleSubmit = async (pageName: string) => {
     let _submissionSessionId = submissionSessionId;
