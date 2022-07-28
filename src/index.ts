@@ -1,5 +1,3 @@
-import { SnoopForm } from './components/SnoopForm/SnoopForm'
-import { SnoopElement } from './components/SnoopElement/SnoopElement'
-import { SnoopPage } from './components/SnoopPage/SnoopPage'
-
-export { SnoopForm, SnoopElement, SnoopPage }
+export * from './components/SnoopForm/SnoopForm';
+export * from './components/SnoopElement/SnoopElement';
+export * from './components/SnoopPage/SnoopPage';

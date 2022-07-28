@@ -20,21 +20,28 @@ Use the SnoopForm components to build your form easily.
 
 - `SnoopForm:` Use the `SnoopForm` wrapper to make the connection to the SnoopForm Data-Platform.
 - `SnoopPage:` Use `SnoopPage` to tell the Form where you need an new page. The SnoopForms library will only show the current page to the user. That way you can build long, more complex forms or a Typeform-like form-view, where the page changes after every question.
-- `SnoopElements:` You can choose your `SnoopElements` from a wide range of pre-coded components, including text, email, checkboxes, radio-buttons, color-pickers, and many more.
+- `SnoopElement:` You can choose your `SnoopElement` from a wide range of pre-coded components, including text, email, checkboxes, radio-buttons, and many more.
 
 ## Example
 
 ```jsx
-<SnoopForm domain="example.com" formId="abcde123">
-  <SnoopPage name="first">
-    <SnoopElement type="text" name={"name"} label="Your name" />
+<SnoopForm domain="app.snoopforms.com" protocol="http" formId="abcd">
+  <SnoopPage name="basicInfo">
+    <SnoopElement type="text" name="name" label="Your name" required />
+    <SnoopElement type="textarea" name="about" label="About you" required />
+    <SnoopElement name="submit" type="submit" label="Submit" />
+  </SnoopPage>
+  <SnoopPage name="advancedInfo">
     <SnoopElement
-      type="radio"
-      name="importance"
-      label="What's your favorite food?"
-      options={["Pizza", "Pasta", "Sushi"]}
+      type="checkbox"
+      name="programming-lanuguages"
+      label="What programming languages do you love?"
+      options={['C++', 'Javascript', 'Scala', 'Assembler']}
     />
-    <SnoopElement type="submit" label="Submit 💪" />
+    <SnoopElement name="submit" type="submit" label="Submit" />
+  </SnoopPage>
+  <SnoopPage name="thankyou" thankyou>
+    <p>Thanks a lot for your time and insights 🙏</p>
   </SnoopPage>
 </SnoopForm>
 ```

@@ -1,27 +1,28 @@
-import React, { FC, useContext, useEffect } from "react";
-import {
-  CurrentPageContext,
-  SchemaContext,
-  SubmissionContext,
-} from "../SnoopForm/SnoopForm";
-import { PageContext } from "../SnoopPage/SnoopPage";
-import { Text } from "../Elements/Text";
-import { Radio } from "../Elements/Radio";
-import { Textarea } from "../Elements/Textarea";
-import { Submit } from "../Elements/Submit";
-import { Checkbox } from "../Elements/Checkbox";
-import { ClassNames } from "../../types";
-import { getOptionsSchema } from "../../lib/elements";
+import React, { FC, useContext, useEffect } from 'react';
+import { getOptionsSchema } from '../../lib/elements';
+import { ClassNames } from '../../types';
+import { Checkbox } from '../Elements/Checkbox';
+import { Email } from '../Elements/Email';
+import { Number } from '../Elements/Number';
+import { Phone } from '../Elements/Phone';
+import { Radio } from '../Elements/Radio';
+import { Submit } from '../Elements/Submit';
+import { Text } from '../Elements/Text';
+import { Textarea } from '../Elements/Textarea';
+import { Website } from '../Elements/Website';
+import { CurrentPageContext, SchemaContext } from '../SnoopForm/SnoopForm';
+import { PageContext } from '../SnoopPage/SnoopPage';
 
 interface Option {
   label: string;
   value: string;
 }
 
-interface Props {
+export interface SnoopElementProps {
   type: string;
   name: string;
   label?: string;
+  icon?: React.ReactNode;
   placeholder?: string;
   classNames?: ClassNames;
   required?: boolean;
@@ -29,10 +30,11 @@ interface Props {
   rows?: number;
 }
 
-export const SnoopElement: FC<Props> = ({
+export const SnoopElement: FC<SnoopElementProps> = ({
   type,
   name,
   label = undefined,
+  icon,
   placeholder,
   classNames = {},
   required = false,
@@ -45,7 +47,7 @@ export const SnoopElement: FC<Props> = ({
 
   useEffect(() => {
     setSchema((schema: any) => {
-      if (pageName === "") {
+      if (pageName === '') {
         console.warn(
           `🦝 SnoopForms: An Element must always be a child of a page!`
         );
@@ -66,9 +68,10 @@ export const SnoopElement: FC<Props> = ({
       }
       newSchema.pages[pageIdx].elements[elementIdx].type = type;
       newSchema.pages[pageIdx].elements[elementIdx].label = label;
-      if (["checkbox", "radio"].includes(type)) {
-        newSchema.pages[pageIdx].elements[elementIdx].options =
-          getOptionsSchema(options);
+      if (['checkbox', 'radio'].includes(type)) {
+        newSchema.pages[pageIdx].elements[
+          elementIdx
+        ].options = getOptionsSchema(options);
       }
       return newSchema;
     });
@@ -79,65 +82,78 @@ export const SnoopElement: FC<Props> = ({
       {currentPageIdx ===
         schema.pages.findIndex((p: any) => p.name === pageName) && (
         <div>
-          {type === "checkbox" ? (
-            <>
-              {label && (
-                <label htmlFor={name} className={classNames.label}>
-                  {label}
-                </label>
-              )}
-              <Checkbox
-                name={name}
-                classNames={classNames}
-                required={required}
-                options={options || []}
-              />
-            </>
-          ) : type === "radio" ? (
-            <>
-              {label && (
-                <label htmlFor={name} className={classNames.label}>
-                  {label}
-                </label>
-              )}
-              <Radio
-                name={name}
-                classNames={classNames}
-                required={required}
-                options={options || []}
-              />
-            </>
-          ) : type === "submit" ? (
+          {type === 'checkbox' ? (
+            <Checkbox
+              name={name}
+              label={label}
+              classNames={classNames}
+              required={required}
+              options={options || []}
+            />
+          ) : type === 'email' ? (
+            <Email
+              name={name}
+              label={label}
+              Icon={icon}
+              placeholder={placeholder}
+              classNames={classNames}
+              required={required}
+            />
+          ) : type === 'number' ? (
+            <Number
+              name={name}
+              label={label}
+              Icon={icon}
+              placeholder={placeholder}
+              classNames={classNames}
+              required={required}
+            />
+          ) : type === 'phone' ? (
+            <Phone
+              name={name}
+              label={label}
+              Icon={icon}
+              placeholder={placeholder}
+              classNames={classNames}
+              required={required}
+            />
+          ) : type === 'radio' ? (
+            <Radio
+              name={name}
+              label={label}
+              classNames={classNames}
+              required={required}
+              options={options || []}
+            />
+          ) : type === 'submit' ? (
             <Submit label={label} classNames={classNames} />
-          ) : type === "text" ? (
-            <>
-              {label && (
-                <label htmlFor={name} className={classNames.label}>
-                  {label}
-                </label>
-              )}
-              <Text
-                name={name}
-                placeholder={placeholder}
-                classNames={classNames}
-                required={required}
-              />
-            </>
-          ) : type === "textarea" ? (
-            <>
-              {label && (
-                <label htmlFor={name} className={classNames.label}>
-                  {label}
-                </label>
-              )}
-              <Textarea
-                name={name}
-                rows={rows}
-                placeholder={placeholder}
-                classNames={classNames}
-                required={required}
-              />
-            </>
+          ) : type === 'text' ? (
+            <Text
+              name={name}
+              label={label}
+              Icon={icon}
+              placeholder={placeholder}
+              classNames={classNames}
+              required={required}
+            />
+          ) : type === 'textarea' ? (
+            <Textarea
+              name={name}
+              label={label}
+              rows={rows}
+              placeholder={placeholder}
+              classNames={classNames}
+              required={required}
+            />
+          ) : type === 'website' ? (
+            <Website
+              name={name}
+              label={label}
+              Icon={icon}
+              placeholder={placeholder}
+              classNames={classNames}
+              required={required}
+            />
           ) : null}
         </div>
       )}

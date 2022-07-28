@@ -1,9 +1,9 @@
-import { RadioGroup } from "@headlessui/react";
-import React, { FC, useContext } from "react";
-import { setSubmissionValue } from "../../lib/elements";
-import { SubmissionContext } from "../SnoopForm/SnoopForm";
-import { PageContext } from "../SnoopPage/SnoopPage";
-import { ClassNames } from "../../types";
+import React, { FC, useContext } from 'react';
+import { setSubmissionValue } from '../../lib/elements';
+import { classNamesConcat } from '../../lib/utils';
+import { ClassNames } from '../../types';
+import { SubmissionContext } from '../SnoopForm/SnoopForm';
+import { PageContext } from '../SnoopPage/SnoopPage';
 
 interface Option {
   label: string;
@@ -12,37 +12,63 @@ interface Option {
 
 interface Props {
   name: string;
-  options: Option[] | string[];
+  label?: string;
+  options: (Option | string)[];
   placeholder?: string;
   classNames: ClassNames;
-  required: boolean;
+  required?: boolean;
 }
 
-export const Radio: FC<Props> = ({ name, options, classNames, required }) => {
-  const { submission, setSubmission }: any = useContext(SubmissionContext);
+export const Radio: FC<Props> = ({ name, label, options, classNames }) => {
+  const { setSubmission }: any = useContext(SubmissionContext);
   const pageName = useContext(PageContext);
 
   return (
     <div>
-      <RadioGroup
-        value={submission[name]}
-        onChange={(v) =>
-          setSubmissionValue(v, pageName, name, submission, setSubmission)
-        }
-        className={classNames.radioGroup}
-      >
-        {options.map((option) => (
-          <RadioGroup.Option
-            key={typeof option === "object" ? option.value : option}
-            value={typeof option === "object" ? option.value : option}
-            className={classNames.radioOption}
-          >
-            <RadioGroup.Label as="span">
-              {typeof option === "object" ? option.label : option}
-            </RadioGroup.Label>
-          </RadioGroup.Option>
-        ))}
-      </RadioGroup>
+      {label && (
+        <label
+          className={
+            classNames.label || 'block text-sm font-medium text-gray-700'
+          }
+        >
+          {label}
+        </label>
+      )}
+      <fieldset className="mt-2">
+        <legend className="sr-only">Please choose an option</legend>
+        <div className="space-y-2">
+          {options.map(option => (
+            <div
+              key={typeof option === 'object' ? option.value : option}
+              className="flex items-center"
+            >
+              <input
+                id={typeof option === 'object' ? option.value : option}
+                name="notification-method"
+                type="radio"
+                className={classNamesConcat(
+                  'focus:ring-slate-500 h-4 w-4 text-slate-600 border-gray-300',
+                  classNames.element
+                )}
+                onClick={() =>
+                  setSubmissionValue(
+                    typeof option === 'object' ? option.value : option,
+                    pageName,
+                    name,
+                    setSubmission
+                  )
+                }
+              />
+              <label
+                htmlFor={typeof option === 'object' ? option.value : option}
+                className="block ml-3 text-base font-medium text-gray-700"
+              >
+                {typeof option === 'object' ? option.label : option}
+              </label>
+            </div>
+          ))}
+        </div>
+      </fieldset>
     </div>
   );
 };

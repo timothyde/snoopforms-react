@@ -1,9 +1,9 @@
-import { RadioGroup } from "@headlessui/react";
-import React, { FC, useContext, useState } from "react";
-import { setSubmissionValue } from "../../lib/elements";
-import { SubmissionContext } from "../SnoopForm/SnoopForm";
-import { PageContext } from "../SnoopPage/SnoopPage";
-import { ClassNames } from "../../types";
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { setSubmissionValue } from '../../lib/elements';
+import { classNamesConcat } from '../../lib/utils';
+import { ClassNames } from '../../types';
+import { SubmissionContext } from '../SnoopForm/SnoopForm';
+import { PageContext } from '../SnoopPage/SnoopPage';
 
 interface Option {
   label: string;
@@ -12,73 +12,84 @@ interface Option {
 
 interface Props {
   name: string;
-  options: Option[] | string[];
+  label?: string;
+  options: (Option | string)[];
   placeholder?: string;
   classNames: ClassNames;
-  required: boolean;
+  required?: boolean;
 }
 
-export const Checkbox: FC<Props> = ({
-  name,
-  options,
-  classNames,
-  required,
-}) => {
+export const Checkbox: FC<Props> = ({ name, label, options, classNames }) => {
   const [checked, setChecked] = useState<string[]>([]);
-  const { submission, setSubmission }: any = useContext(SubmissionContext);
+  const { setSubmission }: any = useContext(SubmissionContext);
   const pageName = useContext(PageContext);
+
+  useEffect(() => {
+    setSubmissionValue(checked, pageName, name, setSubmission);
+  }, [checked]);
 
   return (
     <div>
-      {options.map((option) => (
-        <div
-          className=""
-          key={typeof option === "object" ? option.value : option}
+      {label && (
+        <label
+          className={
+            classNames.label || 'block text-sm font-medium text-gray-700'
+          }
         >
-          <div className="">
-            <input
-              id={typeof option === "object" ? option.value : option}
-              name={typeof option === "object" ? option.value : option}
-              type="checkbox"
-              className={classNames.element}
-              checked={
-                typeof option === "object"
-                  ? checked.includes(option.value)
-                  : checked.includes(option)
-              }
-              onChange={(e) => {
-                const newChecked: string[] = [...checked];
-                const value =
-                  typeof option === "object" ? option.value : option;
-                if (e.target.checked) {
-                  newChecked.push(value);
-                } else {
-                  const idx = newChecked.findIndex((v) => v === value);
-                  if (idx >= 0) {
-                    newChecked.splice(idx, 1);
-                  }
+          {label}
+        </label>
+      )}
+      <div className="mt-2 space-y-2">
+        {options.map(option => (
+          <div
+            className="relative flex items-start"
+            key={typeof option === 'object' ? option.value : option}
+          >
+            <div className="flex items-center h-5">
+              <input
+                id={typeof option === 'object' ? option.value : option}
+                name={typeof option === 'object' ? option.value : option}
+                type="checkbox"
+                className={classNamesConcat(
+                  'focus:ring-slate-500 h-4 w-4 text-slate-600 border-gray-300 rounded-sm',
+                  classNames.element
+                )}
+                checked={
+                  typeof option === 'object'
+                    ? checked.includes(option.value)
+                    : checked.includes(option)
                 }
-                setChecked(newChecked);
-                setSubmissionValue(
-                  newChecked,
-                  pageName,
-                  name,
-                  submission,
-                  setSubmission
-                );
-              }}
-            />
+                onChange={e => {
+                  const newChecked: string[] = [...checked];
+                  const value =
+                    typeof option === 'object' ? option.value : option;
+                  if (e.target.checked) {
+                    newChecked.push(value);
+                  } else {
+                    const idx = newChecked.findIndex(v => v === value);
+                    if (idx >= 0) {
+                      newChecked.splice(idx, 1);
+                    }
+                  }
+                  setChecked(newChecked);
+                  setSubmissionValue(newChecked, pageName, name, setSubmission);
+                }}
+              />
+            </div>
+            <div className="ml-3 text-base">
+              <label
+                htmlFor={typeof option === 'object' ? option.value : option}
+                className={classNamesConcat(
+                  'font-medium text-gray-700',
+                  classNames.elementLabel
+                )}
+              >
+                {typeof option === 'object' ? option.label : option}
+              </label>
+            </div>
           </div>
-          <div>
-            <label
-              htmlFor={typeof option === "object" ? option.value : option}
-              className={classNames.elementLabel}
-            >
-              {typeof option === "object" ? option.label : option}
-            </label>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

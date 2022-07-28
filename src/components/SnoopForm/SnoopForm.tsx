@@ -1,34 +1,37 @@
+import FingerprintJS, { Agent } from '@fingerprintjs/fingerprintjs';
 import React, {
   createContext,
   FC,
   ReactNode,
   useEffect,
   useState,
-} from "react";
-import FingerprintJS, { Agent } from "@fingerprintjs/fingerprintjs";
+} from 'react';
+import { classNamesConcat } from '../../lib/utils';
 
 export const SchemaContext = createContext({
   schema: { pages: [] },
   setSchema: (schema: any) => {
-    // do nothing
+    console.log(schema);
   },
 });
 
 export const SubmissionContext = createContext({
   submission: {},
   setSubmission: (submission: any) => {
-    // do nothing
+    console.log(submission);
   },
 });
 
 export const CurrentPageContext = createContext({
   currentPageIdx: 0,
   setCurrentPageIdx: (currentPageIdx: number) => {
-    // do nothing
+    console.log(currentPageIdx);
   },
 });
 
-export const SubmitHandlerContext = createContext((pageName: string) => {});
+export const SubmitHandlerContext = createContext((pageName: string) => {
+  console.log(pageName);
+});
 
 interface onSubmitProps {
   submission: any;
@@ -38,7 +41,7 @@ interface onSubmitProps {
 interface Props {
   domain: string;
   formId: string;
-  protocol?: "http" | "https";
+  protocol?: 'http' | 'https';
   localOnly?: boolean;
   className?: string;
   onSubmit?: (obj: onSubmitProps) => void;
@@ -46,22 +49,22 @@ interface Props {
 }
 
 export const SnoopForm: FC<Props> = ({
-  domain = "app.snoopforms.com",
+  domain = 'app.snoopforms.com',
   formId,
-  protocol = "https",
+  protocol = 'https',
   localOnly = false,
-  className = "",
+  className = '',
   onSubmit = (): any => {},
   children,
 }) => {
   const [schema, setSchema] = useState<any>({ pages: [] });
   const [submission, setSubmission] = useState<any>({});
   const [currentPageIdx, setCurrentPageIdx] = useState(0);
-  const [submissionSessionId, setSubmissionSessionId] = useState("");
+  const [submissionSessionId, setSubmissionSessionId] = useState('');
   const [fp, setFp] = useState<Agent>();
 
   useEffect(() => {
-    FingerprintJS.load({ monitoring: false }).then((f) => setFp(f));
+    FingerprintJS.load({ monitoring: false }).then(f => setFp(f));
   }, []);
 
   const handleSubmit = async (pageName: string) => {
@@ -69,7 +72,7 @@ export const SnoopForm: FC<Props> = ({
     if (!localOnly) {
       // create answer session if it don't exist
       try {
-        if (typeof fp === "undefined") {
+        if (typeof fp === 'undefined') {
           console.error(
             `Unable to send submission to snoopHub. Error: Can't initialize fingerprint`
           );
@@ -82,8 +85,8 @@ export const SnoopForm: FC<Props> = ({
           const submissionSessionRes: any = await fetch(
             `${protocol}://${domain}/api/forms/${formId}/submissionSessions`,
             {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 userFingerprint: fpResult.visitorId,
               }),
@@ -95,12 +98,12 @@ export const SnoopForm: FC<Props> = ({
         }
         // send answer to snoop platform
         await fetch(`${protocol}://${domain}/api/forms/${formId}/event`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             events: [
               {
-                type: "pageSubmission",
+                type: 'pageSubmission',
                 data: {
                   pageName,
                   submissionSessionId: _submissionSessionId,
@@ -109,7 +112,7 @@ export const SnoopForm: FC<Props> = ({
               },
               // update schema
               // TODO: do conditionally only when requested by the snoopHub
-              { type: "updateSchema", data: schema },
+              { type: 'updateSchema', data: schema },
             ],
           }),
         });
@@ -118,7 +121,7 @@ export const SnoopForm: FC<Props> = ({
       }
     }
     const maxPageIdx = schema.pages.length - 1;
-    const hasThankYou = schema.pages[maxPageIdx].type === "thankyou";
+    const hasThankYou = schema.pages[maxPageIdx].type === 'thankyou';
     if (currentPageIdx < maxPageIdx) {
       setCurrentPageIdx(currentPageIdx + 1);
     }
@@ -137,7 +140,9 @@ export const SnoopForm: FC<Props> = ({
           <CurrentPageContext.Provider
             value={{ currentPageIdx, setCurrentPageIdx }}
           >
-            <div className={className}>{children}</div>
+            <div className={classNamesConcat('max-w-lg', className)}>
+              {children}
+            </div>
           </CurrentPageContext.Provider>
         </SubmissionContext.Provider>
       </SchemaContext.Provider>

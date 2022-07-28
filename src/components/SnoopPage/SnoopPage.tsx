@@ -5,15 +5,15 @@ import React, {
   useContext,
   useEffect,
   useState,
-} from "react";
-import { classNames } from "../../lib/utils";
+} from 'react';
+import { classNamesConcat } from '../../lib/utils';
 import {
   CurrentPageContext,
   SchemaContext,
   SubmitHandlerContext,
-} from "../SnoopForm/SnoopForm";
+} from '../SnoopForm/SnoopForm';
 
-export const PageContext = createContext("");
+export const PageContext = createContext('');
 
 interface Props {
   name: string;
@@ -44,9 +44,9 @@ export const SnoopPage: FC<Props> = ({
         return newSchema;
       }
       if (thankyou) {
-        newSchema.pages.push({ name, type: "thankyou" });
+        newSchema.pages.push({ name, type: 'thankyou' });
       } else {
-        newSchema.pages.push({ name, type: "form", elements: [] });
+        newSchema.pages.push({ name, type: 'form', elements: [] });
       }
 
       return newSchema;
@@ -82,11 +82,12 @@ export const SnoopPage: FC<Props> = ({
     return (
       <PageContext.Provider value={name}>
         <form
-          className={classNames(
+          className={classNamesConcat(
             currentPageIdx ===
               schema.pages.findIndex((p: any) => p.name === name)
-              ? "block"
-              : "hidden",
+              ? 'block'
+              : 'hidden',
+            'space-y-6',
             className
           )}
           onSubmit={onSubmit}
