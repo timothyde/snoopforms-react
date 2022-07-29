@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "name": "@snoopforms/react",
   "author": "snoopForms <hola@snoopforms.com>",
   "description": "React library with form- & survey-elements for the snoopForms platform",

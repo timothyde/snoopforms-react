@@ -49,6 +49,7 @@ export const Website: FC<Props> = ({
           onInvalid={(e: any) =>
             e.target.setCustomValidity('please provide a valid website address')
           }
+          onInput={(e: any) => e.target.setCustomValidity('')}
           name={name}
           id={`input-${name}`}
           className={classNamesConcat(

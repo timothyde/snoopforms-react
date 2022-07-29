@@ -49,6 +49,7 @@ export const Email: FC<Props> = ({
           onInvalid={(e: any) =>
             e.target.setCustomValidity('please enter a valid email address')
           }
+          onInput={(e: any) => e.target.setCustomValidity('')}
           name={name}
           id={`input-${name}`}
           className={classNamesConcat(
