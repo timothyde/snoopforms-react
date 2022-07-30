@@ -39,8 +39,8 @@ interface onSubmitProps {
 }
 
 interface Props {
-  domain: string;
-  formId: string;
+  domain?: string;
+  formId?: string;
   protocol?: 'http' | 'https';
   localOnly?: boolean;
   className?: string;
@@ -74,7 +74,13 @@ export const SnoopForm: FC<Props> = ({
       try {
         if (typeof fp === 'undefined') {
           console.error(
-            `Unable to send submission to snoopHub. Error: Can't initialize fingerprint`
+            `🦝 SnoopForms: Unable to send submission to snoopHub. Error: Can't initialize fingerprint`
+          );
+          return;
+        }
+        if (!formId) {
+          console.warn(
+            `🦝 SnoopForms: formId not set. Skipping sending submission to snoopHub.`
           );
           return;
         }
@@ -82,6 +88,7 @@ export const SnoopForm: FC<Props> = ({
           // get digital fingerprint of user for unique user feature
           const fpResult = await fp.get();
           // create new submissionSession in snoopHub
+
           const submissionSessionRes: any = await fetch(
             `${protocol}://${domain}/api/forms/${formId}/submissionSessions`,
             {
@@ -117,7 +124,9 @@ export const SnoopForm: FC<Props> = ({
           }),
         });
       } catch (e) {
-        console.error(`Unable to send submission to snoopHub. Error: ${e}`);
+        console.error(
+          `🦝 SnoopForms: Unable to send submission to snoopHub. Error: ${e}`
+        );
       }
     }
     const maxPageIdx = schema.pages.length - 1;
