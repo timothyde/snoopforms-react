@@ -43,11 +43,11 @@ export const SnoopPage: FC<Props> = ({
         );
         return newSchema;
       }
-      if (thankyou) {
-        newSchema.pages.push({ name, type: 'thankyou' });
-      } else {
-        newSchema.pages.push({ name, type: 'form', elements: [] });
-      }
+      newSchema.pages.push({
+        name,
+        type: thankyou ? 'thankyou' : 'form',
+        elements: [],
+      });
 
       return newSchema;
     });
