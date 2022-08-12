@@ -1,6 +1,5 @@
 import React, { FC, useContext } from 'react';
 import { setSubmissionValue } from '../../lib/elements';
-import { classNamesConcat } from '../../lib/utils';
 import { ClassNames } from '../../types';
 import { SubmissionContext } from '../SnoopForm/SnoopForm';
 import { PageContext } from '../SnoopPage/SnoopPage';
@@ -46,10 +45,10 @@ export const Radio: FC<Props> = ({ name, label, options, classNames }) => {
                 id={typeof option === 'object' ? option.value : option}
                 name="notification-method"
                 type="radio"
-                className={classNamesConcat(
-                  'focus:ring-slate-500 h-4 w-4 text-slate-600 border-gray-300',
-                  classNames.element
-                )}
+                className={
+                  classNames.element ||
+                  'focus:ring-slate-500 h-4 w-4 text-slate-600 border-gray-300'
+                }
                 onClick={() =>
                   setSubmissionValue(
                     typeof option === 'object' ? option.value : option,
@@ -61,7 +60,10 @@ export const Radio: FC<Props> = ({ name, label, options, classNames }) => {
               />
               <label
                 htmlFor={typeof option === 'object' ? option.value : option}
-                className="block ml-3 text-base font-medium text-gray-700"
+                className={
+                  classNames.elementLabel ||
+                  'block ml-3 text-base font-medium text-gray-700'
+                }
               >
                 {typeof option === 'object' ? option.label : option}
               </label>

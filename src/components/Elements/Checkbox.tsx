@@ -1,6 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { setSubmissionValue } from '../../lib/elements';
-import { classNamesConcat } from '../../lib/utils';
 import { ClassNames } from '../../types';
 import { SubmissionContext } from '../SnoopForm/SnoopForm';
 import { PageContext } from '../SnoopPage/SnoopPage';
@@ -50,10 +49,10 @@ export const Checkbox: FC<Props> = ({ name, label, options, classNames }) => {
                 id={typeof option === 'object' ? option.value : option}
                 name={typeof option === 'object' ? option.value : option}
                 type="checkbox"
-                className={classNamesConcat(
-                  'focus:ring-slate-500 h-4 w-4 text-slate-600 border-gray-300 rounded-sm',
-                  classNames.element
-                )}
+                className={
+                  classNames.element ||
+                  'focus:ring-slate-500 h-4 w-4 text-slate-600 border-gray-300 rounded-sm'
+                }
                 checked={
                   typeof option === 'object'
                     ? checked.includes(option.value)
@@ -79,10 +78,9 @@ export const Checkbox: FC<Props> = ({ name, label, options, classNames }) => {
             <div className="ml-3 text-base">
               <label
                 htmlFor={typeof option === 'object' ? option.value : option}
-                className={classNamesConcat(
-                  'font-medium text-gray-700',
-                  classNames.elementLabel
-                )}
+                className={
+                  classNames.elementLabel || 'font-medium text-gray-700'
+                }
               >
                 {typeof option === 'object' ? option.label : option}
               </label>
