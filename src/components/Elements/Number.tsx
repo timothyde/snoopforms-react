@@ -8,6 +8,7 @@ import { PageContext } from '../SnoopPage/SnoopPage';
 interface Props {
   name: string;
   label?: string;
+  helperText?: string;
   Icon?: React.ReactNode;
   placeholder?: string;
   classNames: ClassNames;
@@ -17,6 +18,7 @@ interface Props {
 export const Number: FC<Props> = ({
   name,
   label,
+  helperText,
   Icon,
   classNames,
   placeholder,
@@ -35,6 +37,15 @@ export const Number: FC<Props> = ({
         >
           {label}
         </label>
+      )}
+      {helperText && (
+        <p
+          className={
+            classNames.helperText || 'block text-sm font-light mb-4 text-gray-900'
+          }
+        >
+          {helperText}
+        </p>
       )}
       <div className="relative mt-1 rounded-md shadow-sm">
         {Icon && (

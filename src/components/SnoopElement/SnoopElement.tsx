@@ -22,6 +22,7 @@ export interface SnoopElementProps {
   type: string;
   name: string;
   label?: string;
+  helperText?: string;
   icon?: React.ReactNode;
   placeholder?: string;
   classNames?: ClassNames;
@@ -34,6 +35,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
   type,
   name,
   label = undefined,
+  helperText = undefined,
   icon,
   placeholder,
   classNames = {},
@@ -68,6 +70,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
       }
       newSchema.pages[pageIdx].elements[elementIdx].type = type;
       newSchema.pages[pageIdx].elements[elementIdx].label = label;
+      newSchema.pages[pageIdx].elements[elementIdx].helperText = helperText;
       if (['checkbox', 'radio'].includes(type)) {
         newSchema.pages[pageIdx].elements[
           elementIdx
@@ -86,6 +89,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Checkbox
               name={name}
               label={label}
+              helperText={helperText}
               classNames={classNames}
               required={required}
               options={options || []}
@@ -94,6 +98,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Email
               name={name}
               label={label}
+              helperText={helperText}
               Icon={icon}
               placeholder={placeholder}
               classNames={classNames}
@@ -103,6 +108,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Number
               name={name}
               label={label}
+              helperText={helperText}
               Icon={icon}
               placeholder={placeholder}
               classNames={classNames}
@@ -112,6 +118,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Phone
               name={name}
               label={label}
+              helperText={helperText}
               Icon={icon}
               placeholder={placeholder}
               classNames={classNames}
@@ -121,6 +128,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Radio
               name={name}
               label={label}
+              helperText={helperText}
               classNames={classNames}
               required={required}
               options={options || []}
@@ -131,6 +139,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Text
               name={name}
               label={label}
+              helperText={helperText}
               Icon={icon}
               placeholder={placeholder}
               classNames={classNames}
@@ -140,6 +149,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Textarea
               name={name}
               label={label}
+              helperText={helperText}
               rows={rows}
               placeholder={placeholder}
               classNames={classNames}
@@ -149,6 +159,7 @@ export const SnoopElement: FC<SnoopElementProps> = ({
             <Website
               name={name}
               label={label}
+              helperText={helperText}
               Icon={icon}
               placeholder={placeholder}
               classNames={classNames}

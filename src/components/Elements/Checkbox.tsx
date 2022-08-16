@@ -12,13 +12,14 @@ interface Option {
 interface Props {
   name: string;
   label?: string;
+  helperText?: string;
   options: (Option | string)[];
   placeholder?: string;
   classNames: ClassNames;
   required?: boolean;
 }
 
-export const Checkbox: FC<Props> = ({ name, label, options, classNames }) => {
+export const Checkbox: FC<Props> = ({ name, label, helperText, options, classNames }) => {
   const [checked, setChecked] = useState<string[]>([]);
   const { setSubmission }: any = useContext(SubmissionContext);
   const pageName = useContext(PageContext);
@@ -32,11 +33,20 @@ export const Checkbox: FC<Props> = ({ name, label, options, classNames }) => {
       {label && (
         <label
           className={
-            classNames.label || 'block text-sm font-medium text-gray-700'
+            classNames.label || 'block text-sm font-light mb-4 text-gray-900'
           }
         >
           {label}
         </label>
+      )}
+      {helperText && (
+          <p
+            className={
+              classNames.helperText || 'block text-sm font-light text-gray-900'
+            }
+          >
+            {helperText}
+          </p>
       )}
       <div className="mt-2 space-y-2">
         {options.map(option => (
