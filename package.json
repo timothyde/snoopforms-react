@@ -1,5 +1,5 @@
 {
-  "version": "0.2.4",
+  "version": "0.2.5",
   "name": "@snoopforms/react",
   "author": "snoopForms <hola@snoopforms.com>",
   "description": "React library with form- & survey-elements for the snoopForms platform",
@@ -86,7 +86,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@fingerprintjs/fingerprintjs": "^3.3.3",
+    "@fingerprintjs/fingerprintjs": "3.3.3",
     "@headlessui/react": "^1.6.6"
   }
 }

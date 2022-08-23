@@ -39,7 +39,7 @@ export const Text: FC<Props> = ({
       <div className={'relative mt-1 rounded-md shadow-sm'}>
         {Icon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <div className="w-5 h-5 text-gray-400 ">{Icon}</div>
+            <div className="w-5 h-5 text-gray-400">{Icon}</div>
           </div>
         )}
 
