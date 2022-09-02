@@ -8,7 +8,7 @@ import { classNamesConcat } from '../../lib/utils';
 interface Props {
   name: string;
   label?: string;
-  helperText?: string;
+  help?: string;
   placeholder?: string;
   rows?: number;
   classNames: ClassNames;
@@ -18,7 +18,7 @@ interface Props {
 export const Textarea: FC<Props> = ({
   name,
   label,
-  helperText,
+  help,
   classNames,
   placeholder,
   rows,
@@ -38,15 +38,6 @@ export const Textarea: FC<Props> = ({
           {label}
         </label>
       )}
-      {label && (
-        <p
-          className={
-            classNames.helperText || 'block text-sm font-light mb-4 text-gray-900'
-          }
-        >
-          {helperText}
-        </p>
-      )}
       <div className="mt-1">
         <textarea
           rows={rows}
@@ -63,6 +54,11 @@ export const Textarea: FC<Props> = ({
           required={required}
         />
       </div>
+      {help && (
+        <p className={classNames.help || 'mt-2 text-sm text-gray-500'}>
+          {help}
+        </p>
+      )}
     </div>
   );
 };

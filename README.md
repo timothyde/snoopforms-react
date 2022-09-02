@@ -27,8 +27,20 @@ Use the SnoopForm components to build your form easily.
 ```jsx
 <SnoopForm domain="app.snoopforms.com" protocol="http" formId="abcd">
   <SnoopPage name="basicInfo">
-    <SnoopElement type="text" name="name" label="Your name" helperText="Please use your real name" required />
-    <SnoopElement type="textarea" name="about" label="About you" helperText="e.g. your hobbies etc." required />
+    <SnoopElement
+      type="text"
+      name="name"
+      label="Your name"
+      help="Please use your real name"
+      required
+    />
+    <SnoopElement
+      type="textarea"
+      name="about"
+      label="About you"
+      help="e.g. your hobbies etc."
+      required
+    />
     <SnoopElement name="submit" type="submit" label="Submit" />
   </SnoopPage>
   <SnoopPage name="advancedInfo">

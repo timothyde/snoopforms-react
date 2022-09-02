@@ -8,7 +8,7 @@ import { PageContext } from '../SnoopPage/SnoopPage';
 interface Props {
   name: string;
   label?: string;
-  helperText?: string;
+  help?: string;
   Icon?: React.ReactNode;
   placeholder?: string;
   classNames: ClassNames;
@@ -18,7 +18,7 @@ interface Props {
 export const Number: FC<Props> = ({
   name,
   label,
-  helperText,
+  help,
   Icon,
   classNames,
   placeholder,
@@ -37,15 +37,6 @@ export const Number: FC<Props> = ({
         >
           {label}
         </label>
-      )}
-      {helperText && (
-        <p
-          className={
-            classNames.helperText || 'block text-sm font-light mb-4 text-gray-900'
-          }
-        >
-          {helperText}
-        </p>
       )}
       <div className="relative mt-1 rounded-md shadow-sm">
         {Icon && (
@@ -69,6 +60,11 @@ export const Number: FC<Props> = ({
           required={required}
         />
       </div>
+      {help && (
+        <p className={classNames.help || 'mt-2 text-sm text-gray-500'}>
+          {help}
+        </p>
+      )}
     </div>
   );
 };

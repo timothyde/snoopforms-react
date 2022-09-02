@@ -12,14 +12,20 @@ interface Option {
 interface Props {
   name: string;
   label?: string;
-  helperText?: string;
+  help?: string;
   options: (Option | string)[];
   placeholder?: string;
   classNames: ClassNames;
   required?: boolean;
 }
 
-export const Radio: FC<Props> = ({ name, label, helperText, options, classNames }) => {
+export const Radio: FC<Props> = ({
+  name,
+  label,
+  help,
+  options,
+  classNames,
+}) => {
   const { setSubmission }: any = useContext(SubmissionContext);
   const pageName = useContext(PageContext);
 
@@ -33,15 +39,6 @@ export const Radio: FC<Props> = ({ name, label, helperText, options, classNames 
         >
           {label}
         </label>
-      )}
-      {helperText && (
-        <p
-          className={
-            classNames.helperText || 'block text-sm font-light mb-4 text-gray-900'
-          }
-        >
-          {helperText}
-        </p>
       )}
       <fieldset className="mt-2">
         <legend className="sr-only">Please choose an option</legend>
@@ -81,6 +78,11 @@ export const Radio: FC<Props> = ({ name, label, helperText, options, classNames 
           ))}
         </div>
       </fieldset>
+      {help && (
+        <p className={classNames.help || 'mt-2 text-sm text-gray-500'}>
+          {help}
+        </p>
+      )}
     </div>
   );
 };
